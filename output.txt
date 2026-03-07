@@ -1,0 +1,356 @@
+REVIT FAMILY
+CREATION COURSE
+(SPECILIZED MEP FAMILIES)
+LECTURE BY KTZM
+----------------Page (0) Break----------------
+I'm delighted to be a part of this Revit MEP Family Creation online course. 
+With over 6 years of experience in the realm of BIM Modeling within the
+construction industry, I come equipped with a deep understanding of how
+Building Information Modeling can revolutionize project workflows. 
+Throughout my career, I've honed my skills in Revit MEP Family Creation,
+enabling me to develop custom families that precisely cater to the unique
+needs of construction projects. I'm eager to collaborate, share insights, and
+delve deeper into the world of MEP Family Creation with all of you in this course.
+MESSAGE FROM
+KYAW TAY ZAR MOE
+LECTURER, BIM MODELLER,
+----------------Page (1) Break----------------
+About Revit Parameters
+What is Constraints?
+Course Objectives
+About Revit Family
+About Revit Family Types
+About Revit Library
+About Revit Category
+About Geometric Forms
+About Reference Plane & Line
+About Revit Family Template Types
+Revit Family Creation Workflow
+Create 3D Families
+Create 2D Familes
+About Formula
+About LookupTable
+----------------Page (2) Break----------------
+COURSE OBJECTIVES
+----------------Page (3) Break----------------
+Course Objectives: What You Will Learn
+Throughout this course, you will embark on a journey that will empower you to:
+    Understand the Significance of Families: You'll discover why families are the backbone of Revit 
+MEP projects and how they contribute to intelligent and efficient building design.
+    Master Family Creation Tools: Gain proficiency in the Family Editor, where you'll create and
+customize parametric families from the ground up.
+    Design MEP Components: Learn to craft custom MEP components such as HVAC equipment,
+plumbing fixtures, and electrical devices tailored to your project's needs.
+    Harness the Power of Parameters: Understand how to define and control parameters to make
+your families flexible and adaptable to various design scenarios.
+    Troubleshoot and Optimize: Acquire the skills to identify and resolve common family creation
+challenges while optimizing your families for peak performance.
+    Integrate Families into Real Projects: Apply your family creation expertise to actual projects,
+enhancing your ability to create highly specialized and efficient MEP systems.
+----------------Page (4) Break----------------
+A b o u t R e v it F a m  ily
+----------------Page (5) Break----------------
+A fam ily is a group of elem ents with a com m on set of properties, called
+param eters, and a related graphical representation.
+All of the elem ents that you add to your Revit projects are created with fam ilies.
+ For exam ple, the structural m em bers, walls, roofs, windows, and doors that
+you use to assem ble a building m odel, as well as the callouts, fixtures, tags,
+and detail com ponents that you use to docum ent it, are all created with
+fam ilies. 
+ By using predefined fam ilies and creating new ones in Revit, you can add
+both standard and custom  elem ents to your building m odels. Fam ilies also
+provide a level of control over elem ents that are sim ilar in use and behavior,
+allowing you to easily m ake design changes and m anage your projects m ore
+efficiently. 
+----------------Page (6) Break----------------
+All families can be two-dimensional,three-dimensional,or both, but not all families have to be parametric.
+Elements created with families that donot need more than one size or type may remain non-parametric.
+Duct and piping families are examplesof 3Dfamilies,which display accordingly in isometric and plan views.
+Annotation detail families are examples of 2D families that do not require 3D representations
+----------------Page (7) Break----------------
+A b o u t R e v it F a m  ily  Types
+----------------Page (8) Break----------------
+R  E  V  I T   F  A  M   I L  Y
+T  Y  P  E  S
+SYSTEM
+FAMILY
+LOADABLE
+FAMILY
+IN-Plance
+Family
+3D Component
+& 2D
+annotation 
+3D
+Componentt &
+2D annotation 
+3D
+Component
+----------------Page (9) Break----------------
+     S y s te m   fa m  ilie s  c re a te  b a s ic  e le m  e n ts  th a t y o u  w  o u ld  a s s e m  b le  o n  a  c o n s tru c tio n
+s ite . 
+     E x a m  p le s : 
+     • W  a lls , ro o fs , flo o rs  
+     • D  u c ts , p ip e s  
+      S y s te m   s e ttin g s , w  h ic h  a ffe c t th e  p ro je c t e n v iro n m  e n t a n d  in c lu d e  ty p e s  fo r le v e ls ,
+g rid s , d ra w  in g  s h e e ts , a n d  v ie w  p o rts , a re  a ls o  s y s te m   fa m  ilie s . 
+      S y s te m   fa m  ilie s  a re  p re d e fin e d  in  R e v it. Y o u  d o  n o t lo a d  th e m   in to  y o u r p ro je c ts
+fro m   e x te rn a l file s , n o r d o  y o u  s a v e  th e m   in  lo c a tio n s  e x te rn a l to  th e  p ro je c t. 
+----------------Page (10) Break----------------
+L o a d a b le  fa m  ilie s  a r e  fa m  ilie s  u s e d  to  c r e a te  th e  fo llo w  in g : 
+B u ild in g  c o m  p o n e n ts  th a t w  o u ld  u s u a lly  b e  p u r c h a s e d , d e liv e r e d , a n d  in s ta lle d  in  a n d  a r o u n d  a  b u ild in g , s u c h  a s  w  in d o w  s ,
+d o o r s , c a s e w  o r k , fix tu r e s , fu r n itu r e , a n d  p la n tin g  
+S y s te m    c o m  p o n e n ts   th a t  w  o u ld   u s u a lly   b e   p u r c h a s e d ,  d e liv e r e d ,  a n d   in s ta lle d   in   a n d   a r o u n d   a   b u ild in g ,  s u c h   a s   b o ile r s ,
+w  a te r  h e a te r s , a ir  h a n d le r s , a n d  p lu m  b in g  fix tu r e s  
+S o m  e  a n n o ta tio n  e le m  e n ts  th a t a r e  r o u tin e ly  c u s to m  iz e d , s u c h  a s  s y m  b o ls  a n d  title  b lo c k s  
+B e c a u s e   o f  th e ir   h ig h ly   c u s to m  iz a b le   n a tu r e ,  lo a d a b le   fa m  ilie s   a r e   th e   fa m  ilie s   th a t  y o u   m  o s t  c o m  m  o n ly   c r e a te   a n d   m  o d ify   in
+R e v it.  U  n lik e   s y s te m    fa m  ilie s ,  lo a d a b le   fa m  ilie s   a r e   c r e a te d   in   e x te r n a l  R F A   file s   a n d   im  p o r te d ,  o r   lo a d e d ,  in   y o u r   p r o je c ts .  F o r
+lo a d a b le  fa m  ilie s  th a t c o n ta in  m  a n y  ty p e s , y o u  c a n  c r e a te  a n d  u s e  ty p e  c a ta lo g s , w  h ic h  a llo w   y o u  to  lo a d  o n ly  th e  ty p e s  th a t y o u
+n e e d  fo r  a  p r o je c t. 
+----------------Page (11) Break----------------
+   In-place elem ents are unique elem ents that you create w hen you need to create a unique com ponent
+that is specific to the current project. You can create in-place geom etry so that it references other
+project geom etry, resizing or adjusting accordingly if the referenced geom etry changes. W hen you
+create an in-place elem ent, Revit creates a fam ily for the in-place elem ent, w hich contains a single
+fam ily type. 
+Creating an in-place elem ent involves m any of the sam e Fam ily Editor tools as creating a loadable
+fam ily. 
+----------------Page (12) Break----------------
+A b o u t R e v it L ib r a r y
+----------------Page (13) Break----------------
+M  E PA rc h ite c tu re
+S  T  A  N  D  A  R  D
+(Eg. US Metric or Singapore)
+S tru c tu re
+R  E  V  I T   L  I B  A  R  Y
+----------------Page (14) Break----------------
+About Revit Category
+----------------Page (15) Break----------------
+Annotation
+Category
+Model Category
+R E V IT  C A T E G O R Y
+Imported Category
+Analytical Model
+Categories
+----------------Page (16) Break----------------
+A B O U T  
+R E V I T  G  E O M  E T R I C  F O R M  S
+----------------Page (17) Break----------------
+S  O  L  I D   F  O  R  M    &
+V  O  I D   F  O  R  M
+Extrusion
+Blend
+Revolve
+Sweep
+Swept Blend
+pushes the profile in one direction.
+links two profiles together..
+rotates the profile around an axis.
+extends a profile along a path.
+connects two
+different profiles
+along a path.
+----------------Page (18) Break----------------
+Void forms use the same methods but must be placed inside solid forms to create a subtracted area.
+----------------Page (19) Break----------------
+A b o u t P a r a m  e te r s
+----------------Page (20) Break----------------
+SHARED
+PARAM ETES
+GLOBAL
+PARAM ETERS
+FAM ILY
+PARAM ETERS
+PROJECT
+PARAM ETERS
+R EV IT
+PA R A M ETER S
+SYSTEM
+PARAM ETRS
+----------------Page (21) Break----------------
+S Y S T E M  P A R M E T E R S    T h e s e  p a ra m  e te rs  a re  b u ilt-in  b y  d e fa u lt in  R e v it; th e y  c a n  n e v e r b e  re m  o v e d , re n a m  e d
+o r m  o d ifie d .
+P R O J E C T  P A R A M E T E R S   T h is  to o l is  u s e d  to  a s s ig n  n e w   p a ra m  e te rs  to  a n y  c a te g o ry  o f e le m  e n ts  in  R e v it. 
+F A M IL Y  P A R A M E T E R S    F a m  ily  p a ra m  e te rs  a re  c re a te d  in s id e  fa m  ilie s .
+S H A R E D  P A R A M E T E R S    T h e s e   p a ra m  e te rs   c a n   b e   s h a re d   a m  o n g   m  u ltip le   fa m  ilie s ,  p ro je c ts   a n d   ta g s .  T h e y
+re q u ire  th e  u s e  o f a  s e p a ra te  te x t file .
+G L O B A L  P A R A M E T E R S    U s e  th e s e  p a ra m  e te rs  in s id e  a  p ro je c t to  c o n tro l m  u ltip le  p a ra m  e te rs  a t o n c e
+----------------Page (22) Break----------------
+
+----------------Page (23) Break----------------
+I N  S  T  A  N  C  E   P  A  R  A  M   E  T  E  R
+Enables you to modify the parameter value separately for every
+instance.
+----------------Page (24) Break----------------
+T  Y  P  E   P  A  R  A  M   E  T  E  R
+E n a b le s  y o u  to  m  o d ify  th e  p a ra m  e te r v a lu e , w  h ic h  a p p lie s  to  a ll
+e le m  e n ts  o f th e  fa m  ily  ty p e .
+----------------Page (25) Break----------------
+R E F E R E N C E  L I N E
+&
+R E F E R E N C E  P L A N E
+----------------Page (26) Break----------------
+R  e  f e  r e  n  c  e   L  i n  e
+        Reference Line is a guideline which has 4 reference planes whereas curved lines offer 2
+reference planes. It is acting like 2D or 3D lines but is not visible in the project when is loaded.                     
+It is normally used to constraint angles (rotation) in the family editor if needed.
+----------------Page (27) Break----------------
+Reference Plane
+      R e fe re n ce  P lan e  is a 2 -d im e n sio n al su rface  (like  a p lan  vie w ) to  d raw  2 d  lin e s. It is im p o rtan t to  n o te  th at it is
+an  in d e p e n d e n t w o rk p lan e  fro m  th e  o rig in al w h ich  m e an s yo u  can  se t it u p  w h e re ve r yo u  w an t as lo n g  as yo u
+h ave  a re fe re n ce . 
+It is u se d  as a g u id e lin e  w h e n  cre atin g  a fam ily o r in  a p ro je ct. 
+    T h e re  are  a fe w  h ie rarch ie s in  th e  re fe re n ce  p lan e s th at w ill d e te rm in e  w h ich  re fe re n ce  p lan e s w ill g e t
+sn ap p e d  first in  th e  p ro je ct. 
+S tro n g  R e fe re n ce  - H ig h  p rio rity fo r d im e n sio n in g  an d    sn ap p in g       
+  
+W e ak re fe re n ce  - S e co n d  p rio rity fo r d im e n sio n in g  an d  sn ap p in g
+ N o t A  R e fe re n ce  - n o  d im e n sio n in g  an d  sn ap p in g
+T h e  in te rse ctio n  o f th e  re fe re n ce  p lan e s w ith  'd e fin e  O rig in ' w ill b e  an  in se rtio n /o rig in  p o in t in  th e  p ro je ct. 
+----------------Page (28) Break----------------
+WHAT IS CONSTRAINTS?
+----------------Page (29) Break----------------
+ 
+       Constraints build intelligence into the model, defining relationships and interdependencies between
+elements. Create constraints by applying locked dimensions and alignments, or attaching elements
+together (such as walls and roofs).
+    For example, you can specify that a door maintains a certain distance from a wall, or that a series of
+walls are equally spaced within a specified distance.
+      An equality constraint appears as an EQ symbol near the dimension line when you select a
+multi-segmented dimension.
+      If you select one of the references for the dimension line (such as a wall), the EQ symbol
+appears with a dashed blue line at the middle of the references.
+      The EQ symbol represents an equality constraint element applied to the references for this
+dimension. The references, which are walls in the graphic, remain at equal distances from one
+another while this constraint is active. If you select one of the walls and move it, all walls move
+together at a fixed distance. 
+----------------Page (30) Break----------------
+    L o c k  a  p e rm  a n e n t d im  e n s io n  to  c re a te  a  c o n s tra in t.
+    W  h e n  y o u  p la c e  a  p e rm  a n e n t d im  e n s io n , y o u  c a n  c lic k  th e  lo c k  ic o n  fo r th e  d im  e n s io n  a n d  c re a te  a
+c o n s tra in t. A  c o n s tra in t (d a s h e d  b lu e  lin e ) a p p e a rs  w  h e n  y o u  s e le c t its  re fe re n c e s , a s  s h o w  n  in  th e  fo llo w  in g
+im  a g e .
+      C o n s tra in t fro m   lo c k e d  d im  e n s io n s
+      M  a n y  d im  e n s io n s  m  a y  c o rre s p o n d  to  th e  s a m  e  c o n s tra in t. F o r e x a m  p le , if y o u  p la c e  a  d im  e n s io n  b e tw  e e n
+2  w  a lls  a n d  lo c k  it, y o u  h a v e  c re a te d  a  c o n s tra in t. If y o u  p la c e  a n o th e r d im  e n s io n  b e tw  e e n  th e  s a m  e  2  w  a lls
+a n d  lo c k  it, n o  a d d itio n a l c o n s tra in t is  c re a te d .
+----------------Page (31) Break----------------
+ABOUT REVIT 
+TEMPLATE TYPES
+----------------Page (32) Break----------------
+FAMILY TEMPLATE
+TEMPLATE
+ PROJECT
+TEMPLATE
+MEPARCHITECTURE STRUCTURE
+CONCEPTUAL
+MASS
+3D COMPONENT           2D ANNOTATION
+PROFILE
+BASED
+COMPONENT
+ADAPTIVE                  TITLE BLOCK
+COMBINED
+SYSTEM
+TAG
+C  e ilin g  B a s e d
+F a c e  B a s e d
+F lo o r B a s e d
+L in e  B a s e d
+P a tte n  B a s e d
+R o o f B a s e d
+T w  o  L e v e l B a s e d
+W  a ll B a s e d
+P ro file  H  o s te d
+P ro file  M  u llio n
+P ro file  R a il
+P ro file  R e v e a l
+P ro file  S ta ir N  o s in g
+        T h e  s o ftw  a re  p ro v id e s  m  a n y  te m  p la te s , in c lu d in g  th o s e  fo r a ll k in d s  o f fa m  ilie s , a n d
+le ts  y o u  g ra p h ic a lly  d ra w   th e  n e w   fa m  ily .T h e  te m  p la te s  c o n ta in  m  u c h  o f th e  in fo rm  a tio n
+th a t y o u  n e e d  to  s ta rt c re a tin g  th e  fa m  ily  a n d  th a t R e v it n e e d s  to  p la c e  th e  fa m  ily  in
+p ro je c ts .
+----------------Page (33) Break----------------
+REVIT FAMILY CREATION
+WORKFLOW
+----------------Page (34) Break----------------
+1.Plan the family.
+2.Create a new family (.rfa) using the appropriate family template.
+3.Define Subcategories to control the visibility.
+4.Create the family skeleton or framework.
+5.Define the insertion point.
+6.Layout Reference Planes and Reference  Lines.
+7.Add dimensions to specify parametric relationship.
+8.Label Dimensions to create type or instance parameters.
+9.Test,or flex the framework.
+10.Specify different parameters.
+11.Add geometry in solids,voids and constraints.
+12.Flex the model.
+13.Load in the project.
+14.Repeat previous steps until the family geometry is complete
+----------------Page (35) Break----------------
+FORMULAS
+----------------Page (36) Break----------------
+Basic Syntax:
+Addition                                            +
+Subtraction                                      -
+Multiplication                                 *
+Division                                              /
+Exponentiation                              ^
+Logarithm                                        log
+Square Root                                  sqrt( )
+Sine                                                   sin
+Cosine                                              cos
+Tangent                                           tan
+Arcsine                                            asin
+Arccosine                                       acos
+Arctangent                                     atan
+10raised to a power                    exp(x)
+Absolute Value                              abs
+Pi                                                         pi( ) 
+Rounding:
+round(x)  
+roundup(x)
+rounddown(x)
+          
+Conditional Stantements:
+Less than        <
+Greater than   >
+Equal                =
+Both True        AND
+One True         OR
+False                 NOT       
+          
+Conditional "if" Stantements:
+if(condition, result if true, result if false)
+>= and <=      Not currently available in revit.
+                    express as NOT:
+Example:
+X <= Y        write as:      NOT(x>y)
+  
+ Returns value rounded to the nearest whole number.
+Ignores direction .
+Returns value to the largest value greater than or equal
+to 'x'.
+Returns value to the smallest value less than or equal to
+'x'.     
+----------------Page (37) Break----------------
+ABOUT LOOKUP TABLE
+----------------Page (38) Break----------------
+L o o k u p  ta b le s  a re  u s e d   f o r  p  ip  e  a n d   c o n d  u it  f a m   ilie s  t o  d  e f in e  p  a r a m   e t e r  v a lu e s  in  a n  e x te rn a l c o m  m  a -s e p a ra te d
+v a lu e s  (C S V ) file .
+L o o k u p  ta b le s  c o n ta in  ty p e  d a ta , a llo w  in g  y o u  to  s p e c ify  m  u ltip le  p a rt s iz e s  w  ith o u t c re a tin g  a  s e p a ra te  fa m  ily  ty p e  fo r
+e a c h  s iz e . R e v it p ro v id e s  a  s iz e _ lo o k u p  fu n c tio n  th a t re a d s  th e  n e c e s s a ry  v a lu e s  fro m   a n  e x te rn a l C S V  file .
+D a ta  fro m   lo o k u p  ta b le s  is  s to re d  w  ith in  th e  fa m  ily  a n d  u s e s  th e  s iz e _ lo o k u p  fu n c tio n . L o o k u p  ta b le s  a re  u s e d  in
+c o n ju n c tio n  w  ith  ty p e  c a ta lo g s .
+T h e  s y n ta x  fo r th e  s iz e _ lo o k u p  fu n c tio n  u s e s  th e  fo llo w  in g  fo rm  a t:
+result=size_lookup(LookupTableName, LookupColumn, DefaultIfNotFound, LookupValue1, LookupValue2, ...,
+LookupValueN)
+       W  h e re ...                                                              Is  th e ...
+re s u lt                                                                   re tu rn e d  v a lu e .
+L o o k u p T a b le N a m  e                                        n a m  e  o f th e  C S V  file  to  lo o k u p .
+L o o k u p C o lu m  n                                               n a m  e  o f th e  c o lu m  n  fro m   w  h ic h  th e  re s u lt v a lu e  is  to  b e  re tu rn e d .
+D e fa u ltIfN o tF o u n d                                         v a lu e  th a t w  ill b e  re tu rn e d  if L o o k u p V a lu e  is  n o t fo u n d .
+L o o k u p V a lu e (1 -N )                                         v a lu e  to  fin d  in  th e  firs t, s e c o n d , a n d  s u b s e q u e n t c o lu m  n s  o f th e  ta b le . 
+                                                                                     (W  h e n  lo o k in g  u p  v a lu e s , th e  firs t c o lu m  n  is  s k ip p e d .) 
+----------------Page (39) Break----------------
