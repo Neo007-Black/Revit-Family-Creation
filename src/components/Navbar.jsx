@@ -8,12 +8,8 @@ export function Navbar() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
                 <Link to="/" style={{ fontWeight: 700, fontSize: '1.25rem', color: 'var(--text-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Home size={24} color="var(--accent)" />
-                    <span>Revit Masterclass</span>
+                    <span>Revit MEP Family Creation Course</span>
                 </Link>
-            </div>
-
-            <div style={{ fontSize: '0.85rem', color: 'var(--accent)', background: 'rgba(244, 63, 94, 0.1)', padding: '0.5rem 1rem', borderRadius: '20px', fontWeight: '600' }}>
-                MEP Custom Curriculum
             </div>
         </nav>
     );
