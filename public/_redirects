@@ -1,4 +1,1 @@
-# Render Redirect Rules
-# Redirect all routes to index.html for SPA (React Router)
-# This also prevents 404s on direct URL access
 /*    /index.html   200
