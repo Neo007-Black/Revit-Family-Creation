@@ -170,7 +170,7 @@ export function Quiz() {
                                     boxShadow: isSelected && !hasAnsweredCurrent ? '0 4px 12px rgba(225, 29, 72, 0.1)' : '0 2px 4px rgba(0,0,0,0.02)'
                                 }}
                             >
-                                <span style={{ fontSize: '1.1rem', fontWeight: isSelected || isCorrect ? '600' : '500', color: textColor }}>
+                                <span style={{ fontSize: '1.1rem', fontWeight: '500', color: textColor }}>
                                     {optionEn}
                                 </span>
                             </button>
