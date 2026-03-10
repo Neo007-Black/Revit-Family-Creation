@@ -9,6 +9,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Login } from './pages/Login';
 import { Settings } from './pages/Settings';
+import { Quiz } from './pages/Quiz';
 
 function App() {
 
@@ -38,6 +39,13 @@ function App() {
                                 <TopTabs />
                                 <main className="main-content" style={{ maxWidth: 'none', padding: '0' }}>
                                     <Lesson />
+                                </main>
+                            </>
+                        } />
+                        <Route path="/quiz" element={
+                            <>
+                                <main className="main-content" style={{ maxWidth: 'none', padding: '0' }}>
+                                    <Quiz />
                                 </main>
                             </>
                         } />

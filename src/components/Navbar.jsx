@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Home, Settings, LogOut, LogIn } from 'lucide-react';
+import { Home, Settings, LogOut, LogIn, FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export function Navbar() {
@@ -23,6 +23,10 @@ export function Navbar() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 {user ? (
                     <>
+                        <Link to="/quiz" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', padding: '0.5rem 0.75rem', borderRadius: '8px', transition: 'all 0.2s', ...hoverStyle }}>
+                            <FileText size={18} />
+                            <span>Quiz</span>
+                        </Link>
                         {isAdmin && (
                             <Link to="/settings" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', padding: '0.5rem 0.75rem', borderRadius: '8px', transition: 'all 0.2s', ...hoverStyle }}>
                                 <Settings size={18} />
