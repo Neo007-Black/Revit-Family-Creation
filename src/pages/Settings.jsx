@@ -3,13 +3,17 @@ import { useAuth } from '../context/AuthContext';
 import { Settings as SettingsIcon, Users, Lock, Database, Bell, X, Trash2, Edit2 } from 'lucide-react';
 
 export function Settings() {
-    const { user, users, addStudent, updateStudent, deleteStudent } = useAuth();
+    const { user, users, addStudent, updateStudent, deleteStudent, updatePassword } = useAuth();
 
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentId, setCurrentId] = useState(null);
     const [error, setError] = useState('');
+
+    // Admin Password Modal state
+    const [isAdminPasswordModalOpen, setAdminPasswordModalOpen] = useState(false);
+    const [adminPassword, setAdminPassword] = useState('');
 
     // Form state
     const [formData, setFormData] = useState({
@@ -18,6 +22,17 @@ export function Settings() {
         password: '',
         status: 'Active'
     });
+
+    const handleAdminPasswordSubmit = (e) => {
+        e.preventDefault();
+        if (adminPassword.trim().length < 4) {
+            setError('Password must be at least 4 characters long.');
+            return;
+        }
+        updatePassword(user.username, adminPassword);
+        setAdminPassword('');
+        setAdminPasswordModalOpen(false);
+    };
 
     const students = users?.filter(u => u.role === 'student') || [];
 
@@ -156,38 +171,10 @@ export function Settings() {
                         <Lock size={20} color="var(--accent)" />
                         <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Security</h2>
                     </div>
-                    <button style={btnStyle}>Change Admin Password</button>
+                    <button style={btnStyle} onClick={() => setAdminPasswordModalOpen(true)}>Change Admin Password</button>
                     <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: '500' }}>Require 2FA for Admins</span>
                         <input type="checkbox" defaultChecked style={{ accentColor: 'var(--accent)', transform: 'scale(1.2)' }} />
-                    </div>
-                </div>
-
-                {/* Course Content */}
-                <div className="glass-panel" style={{ padding: '2rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                        <Database size={20} color="var(--accent)" />
-                        <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Course Data</h2>
-                    </div>
-                    <button style={btnStyle}>Edit Curriculum JSON</button>
-                    <button style={{ ...btnStyle, marginTop: '0.75rem' }}>Sync with Database</button>
-                </div>
-
-                {/* Notifications */}
-                <div className="glass-panel" style={{ padding: '2rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                        <Bell size={20} color="var(--accent)" />
-                        <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Notifications</h2>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Email alerts on new enrollments</span>
-                            <input type="checkbox" defaultChecked style={{ accentColor: 'var(--accent)', transform: 'scale(1.2)' }} />
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Weekly progress reports</span>
-                            <input type="checkbox" style={{ accentColor: 'var(--accent)', transform: 'scale(1.2)' }} />
-                        </div>
                     </div>
                 </div>
             </div>
@@ -236,6 +223,40 @@ export function Settings() {
                                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                             >
                                 {isEditing ? 'Save Changes' : 'Create Student'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Admin Password Modal */}
+            {isAdminPasswordModalOpen && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+                    <div className="glass-panel" style={{ width: '100%', maxWidth: '400px', padding: '2rem', position: 'relative', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
+                        <button onClick={() => { setAdminPasswordModalOpen(false); setError(''); }} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}>
+                            <X size={20} />
+                        </button>
+
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--text-primary)', marginTop: 0 }}>
+                            Change Admin Password
+                        </h2>
+
+                        {error && (
+                            <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: 'rgb(239, 68, 68)', padding: '0.75rem', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+                                {error}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleAdminPasswordSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div>
+                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>New Password</label>
+                                <input type="text" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} style={inputStyle} placeholder="Enter new password" required />
+                            </div>
+                            <button type="submit" style={{ marginTop: '1rem', padding: '0.85rem', background: 'var(--accent)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 12px rgba(225, 29, 72, 0.2)' }}
+                                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                            >
+                                Save New Password
                             </button>
                         </form>
                     </div>

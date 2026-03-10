@@ -80,6 +80,11 @@ export const AuthProvider = ({ children }) => {
         setUsers(prev => prev.filter(u => u.id !== id));
     };
 
+    const updatePassword = (username, newPassword) => {
+        setUsers(prev => prev.map(u => u.username === username ? { ...u, password: newPassword } : u));
+        return { success: true };
+    };
+
     const value = {
         user,
         users, // Export the full list for the Settings page
@@ -88,6 +93,7 @@ export const AuthProvider = ({ children }) => {
         addStudent,
         updateStudent,
         deleteStudent,
+        updatePassword,
         isAdmin: user?.role === 'admin',
         isStudent: user?.role === 'student'
     };
