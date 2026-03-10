@@ -8,6 +8,7 @@ export function Quiz() {
     const [showResults, setShowResults] = useState(false);
 
     const handleOptionSelect = (index) => {
+        if (selectedAnswers[currentQuestionIndex] !== null) return;
         const newSelectedAnswers = [...selectedAnswers];
         newSelectedAnswers[currentQuestionIndex] = index;
         setSelectedAnswers(newSelectedAnswers);
@@ -117,42 +118,89 @@ export function Quiz() {
                     <h2 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', marginBottom: '0.75rem', lineHeight: 1.4 }}>
                         {currentQuestion.questionEn}
                     </h2>
-                    <h3 style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', fontWeight: '500', margin: 0, lineHeight: 1.5 }}>
-                        {currentQuestion.questionMy}
-                    </h3>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {currentQuestion.optionsEn.map((optionEn, index) => {
                         const isSelected = selectedAnswers[currentQuestionIndex] === index;
+                        const isCorrect = index === currentQuestion.correctAnswerIndex;
+
+                        let bgColor = 'white';
+                        let borderColor = 'rgba(0,0,0,0.08)';
+                        let textColor = 'var(--text-primary)';
+                        let opacity = 1;
+
+                        if (hasAnsweredCurrent) {
+                            if (isCorrect) {
+                                bgColor = 'rgba(34, 197, 94, 0.1)';
+                                borderColor = 'rgb(34, 197, 94)';
+                                textColor = 'rgb(21, 128, 61)';
+                            } else if (isSelected && !isCorrect) {
+                                bgColor = 'rgba(239, 68, 68, 0.1)';
+                                borderColor = 'rgb(239, 68, 68)';
+                                textColor = 'rgb(185, 28, 28)';
+                            } else {
+                                opacity = 0.5;
+                            }
+                        } else {
+                            if (isSelected) {
+                                bgColor = 'rgba(225, 29, 72, 0.05)';
+                                borderColor = 'var(--accent)';
+                                textColor = 'var(--accent)';
+                            }
+                        }
+
                         return (
                             <button
                                 key={index}
                                 onClick={() => handleOptionSelect(index)}
+                                disabled={hasAnsweredCurrent}
                                 style={{
                                     display: 'flex',
                                     flexDirection: 'column',
                                     gap: '0.25rem',
                                     padding: '1.25rem',
-                                    background: isSelected ? 'rgba(225, 29, 72, 0.05)' : 'white',
-                                    border: `2px solid ${isSelected ? 'var(--accent)' : 'rgba(0,0,0,0.08)'}`,
+                                    background: bgColor,
+                                    border: `2px solid ${borderColor}`,
                                     borderRadius: '12px',
                                     textAlign: 'left',
-                                    cursor: 'pointer',
+                                    cursor: hasAnsweredCurrent ? 'default' : 'pointer',
                                     transition: 'all 0.2s ease',
-                                    boxShadow: isSelected ? '0 4px 12px rgba(225, 29, 72, 0.1)' : '0 2px 4px rgba(0,0,0,0.02)'
+                                    opacity: opacity,
+                                    boxShadow: isSelected && !hasAnsweredCurrent ? '0 4px 12px rgba(225, 29, 72, 0.1)' : '0 2px 4px rgba(0,0,0,0.02)'
                                 }}
                             >
-                                <span style={{ fontSize: '1.1rem', fontWeight: isSelected ? '600' : '500', color: isSelected ? 'var(--accent)' : 'var(--text-primary)' }}>
+                                <span style={{ fontSize: '1.1rem', fontWeight: isSelected || isCorrect ? '600' : '500', color: textColor }}>
                                     {optionEn}
-                                </span>
-                                <span style={{ fontSize: '0.95rem', color: isSelected ? 'var(--accent)' : 'var(--text-secondary)', opacity: 0.8 }}>
-                                    {currentQuestion.optionsMy[index]}
                                 </span>
                             </button>
                         );
                     })}
                 </div>
+
+                {hasAnsweredCurrent && (
+                    <div style={{
+                        marginTop: '1.5rem',
+                        padding: '1.5rem',
+                        background: selectedAnswers[currentQuestionIndex] === currentQuestion.correctAnswerIndex ? 'rgba(34, 197, 94, 0.05)' : 'rgba(239, 68, 68, 0.05)',
+                        borderRadius: '12px',
+                        borderLeft: `4px solid ${selectedAnswers[currentQuestionIndex] === currentQuestion.correctAnswerIndex ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)'}`
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                            {selectedAnswers[currentQuestionIndex] === currentQuestion.correctAnswerIndex ? (
+                                <CheckCircle2 size={20} color="rgb(34, 197, 94)" />
+                            ) : (
+                                <AlertTriangle size={20} color="rgb(239, 68, 68)" />
+                            )}
+                            <h4 style={{ margin: 0, fontSize: '1.1rem', color: selectedAnswers[currentQuestionIndex] === currentQuestion.correctAnswerIndex ? 'rgb(21, 128, 61)' : 'rgb(185, 28, 28)' }}>
+                                {selectedAnswers[currentQuestionIndex] === currentQuestion.correctAnswerIndex ? 'Correct!' : 'Incorrect'}
+                            </h4>
+                        </div>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                            {currentQuestion.explanation}
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem' }}>
