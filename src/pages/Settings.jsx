@@ -22,17 +22,72 @@ export function Settings() {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                {/* Account Settings */}
-                <div className="glass-panel" style={{ padding: '2rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                        <Users size={20} color="var(--accent)" />
-                        <h2 style={{ fontSize: '1.25rem', margin: 0 }}>User Management</h2>
+                <div className="glass-panel" style={{ padding: '2rem', gridColumn: '1 / -1' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <Users size={20} color="var(--accent)" />
+                            <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Student Management</h2>
+                        </div>
+                        <button style={{
+                            padding: '0.5rem 1rem',
+                            background: 'var(--accent)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontSize: '0.85rem',
+                            fontWeight: '600'
+                        }}>+ Add Student</button>
                     </div>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
-                        Currently logged in as: <strong>{user?.username}</strong> ({user?.role})
-                    </p>
-                    <button style={btnStyle}>Manage Students</button>
-                    <button style={{ ...btnStyle, marginTop: '0.75rem' }}>Add New Instructor</button>
+
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.05)', textAlign: 'left', color: 'var(--text-secondary)' }}>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Name</th>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Username</th>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Status</th>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Progress</th>
+                                    <th style={{ padding: '1rem', fontWeight: '600', textAlign: 'right' }}>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {[
+                                    { name: 'John Doe', username: 'student', status: 'Active', progress: '45%' },
+                                    { name: 'Jane Smith', username: 'jsmith12', status: 'Active', progress: '12%' },
+                                    { name: 'Mike Johnson', username: 'mjohnson', status: 'Inactive', progress: '0%' }
+                                ].map((student, i) => (
+                                    <tr key={i} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                                        <td style={{ padding: '1rem', color: 'var(--text-primary)', fontWeight: '500' }}>{student.name}</td>
+                                        <td style={{ padding: '1rem', color: 'var(--text-secondary)' }}>{student.username}</td>
+                                        <td style={{ padding: '1rem' }}>
+                                            <span style={{
+                                                background: student.status === 'Active' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                                color: student.status === 'Active' ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)',
+                                                padding: '0.25rem 0.5rem',
+                                                borderRadius: '12px',
+                                                fontSize: '0.8rem',
+                                                fontWeight: '600'
+                                            }}>
+                                                {student.status}
+                                            </span>
+                                        </td>
+                                        <td style={{ padding: '1rem' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <div style={{ width: '100%', background: 'rgba(0,0,0,0.05)', height: '6px', borderRadius: '3px' }}>
+                                                    <div style={{ width: student.progress, background: 'var(--accent)', height: '100%', borderRadius: '3px' }}></div>
+                                                </div>
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{student.progress}</span>
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '1rem', textAlign: 'right' }}>
+                                            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent)', fontSize: '0.85rem', fontWeight: '600' }}>Edit</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {/* Security Settings */}

@@ -133,13 +133,6 @@ export function Login() {
                     >
                         Sign In
                     </button>
-                    <div style={{ marginTop: '1.5rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                        <p style={{ marginBottom: '0.5rem', fontWeight: '500' }}>DEMO ACCOUNTS:</p>
-                        <ul style={{ listStyleType: 'none', padding: 0, margin: 0, opacity: 0.8 }}>
-                            <li style={{ marginBottom: '0.25rem' }}><b>Admin:</b> admin / password123</li>
-                            <li><b>Student:</b> student / password123</li>
-                        </ul>
-                    </div>
                 </form>
             </div>
         </div>
