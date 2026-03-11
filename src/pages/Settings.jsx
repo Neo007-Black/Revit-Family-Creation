@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Settings as SettingsIcon, Users, Lock, Database, Bell, X, Trash2, Edit2 } from 'lucide-react';
+import { Settings as SettingsIcon, Users, Lock, X, Trash2, Edit2, Clock } from 'lucide-react';
 
 export function Settings() {
-    const { user, users, addStudent, updateStudent, deleteStudent, updatePassword } = useAuth();
+    const { user, users, loginLog, isUserActive, addStudent, updateStudent, deleteStudent, updatePassword } = useAuth();
 
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -158,6 +158,69 @@ export function Settings() {
                                 {students.length === 0 && (
                                     <tr>
                                         <td colSpan="6" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-secondary)' }}>No students found. Add one to get started.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {/* Login Log */}
+                <div className="glass-panel" style={{ padding: '2rem', gridColumn: '1 / -1' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                        <Clock size={20} color="var(--accent)" />
+                        <h2 style={{ fontSize: '1.25rem', margin: 0 }}>Login Log</h2>
+                    </div>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                        Recent student logins and activity status. Active = activity within the last 5 minutes.
+                    </p>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.05)', textAlign: 'left', color: 'var(--text-secondary)' }}>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Name</th>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Username</th>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Role</th>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Login Time</th>
+                                    <th style={{ padding: '1rem', fontWeight: '600' }}>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {(loginLog || []).map((entry) => {
+                                    const active = isUserActive(entry.username);
+                                    const loginDate = new Date(entry.loginTime);
+                                    const formattedTime = loginDate.toLocaleString(undefined, {
+                                        dateStyle: 'medium',
+                                        timeStyle: 'short'
+                                    });
+                                    return (
+                                        <tr key={entry.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                                            <td style={{ padding: '1rem', color: 'var(--text-primary)', fontWeight: '500' }}>{entry.name}</td>
+                                            <td style={{ padding: '1rem', color: 'var(--text-secondary)' }}>{entry.username}</td>
+                                            <td style={{ padding: '1rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{entry.role}</td>
+                                            <td style={{ padding: '1rem', color: 'var(--text-secondary)' }}>{formattedTime}</td>
+                                            <td style={{ padding: '1rem' }}>
+                                                <span style={{
+                                                    background: active ? 'rgba(34, 197, 94, 0.1)' : 'rgba(156, 163, 175, 0.2)',
+                                                    color: active ? 'rgb(34, 197, 94)' : 'rgb(107, 114, 128)',
+                                                    padding: '0.25rem 0.6rem',
+                                                    borderRadius: '12px',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '600',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.35rem'
+                                                }}>
+                                                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: active ? 'currentColor' : 'currentColor', opacity: active ? 1 : 0.6 }} />
+                                                    {active ? 'Active' : 'Offline'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                                {(!loginLog || loginLog.length === 0) && (
+                                    <tr>
+                                        <td colSpan="5" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-secondary)' }}>No login records yet.</td>
                                     </tr>
                                 )}
                             </tbody>
