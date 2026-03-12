@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { quizData } from '../data/quizData';
-import { CheckCircle2, ChevronRight, RefreshCcw, AlertTriangle } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { CheckCircle2, ChevronRight, RefreshCcw, AlertTriangle, List } from 'lucide-react';
 
 export function Quiz() {
+    const { isAdmin } = useAuth();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState(Array(quizData.length).fill(null));
     const [showResults, setShowResults] = useState(false);
@@ -81,9 +83,37 @@ export function Quiz() {
 
     const currentQuestion = quizData[currentQuestionIndex];
     const hasAnsweredCurrent = selectedAnswers[currentQuestionIndex] !== null;
+    const canProceed = hasAnsweredCurrent || isAdmin;
 
     return (
         <div style={{ padding: '2rem 4rem', maxWidth: '900px', margin: '0 auto' }}>
+            {/* Admin: Question Navigator */}
+            {isAdmin && (
+                <div className="glass-panel" style={{ padding: '1rem 1.5rem', marginBottom: '1.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--accent)' }}>
+                        <List size={18} /> Jump to any question
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {quizData.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => setCurrentQuestionIndex(idx)}
+                                style={{
+                                    width: '36px', height: '36px', padding: 0, borderRadius: '8px',
+                                    border: currentQuestionIndex === idx ? '2px solid var(--accent)' : '1px solid rgba(0,0,0,0.1)',
+                                    background: currentQuestionIndex === idx ? 'rgba(225,29,72,0.1)' : 'rgba(255,255,255,0.8)',
+                                    color: currentQuestionIndex === idx ? 'var(--accent)' : 'var(--text-primary)',
+                                    fontWeight: 600, cursor: 'pointer', fontSize: '0.85rem',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {idx + 1}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
                 <div>
                     <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>
@@ -220,23 +250,23 @@ export function Quiz() {
 
                 <button
                     onClick={handleNext}
-                    disabled={!hasAnsweredCurrent}
+                    disabled={!canProceed}
                     style={{
                         display: 'flex', alignItems: 'center', gap: '0.5rem',
                         padding: '1rem 2.5rem', border: 'none',
-                        background: hasAnsweredCurrent ? 'var(--accent)' : 'rgba(0,0,0,0.1)',
-                        color: hasAnsweredCurrent ? 'white' : 'white',
+                        background: canProceed ? 'var(--accent)' : 'rgba(0,0,0,0.1)',
+                        color: 'white',
                         borderRadius: '8px', fontSize: '1rem', fontWeight: '600',
-                        cursor: hasAnsweredCurrent ? 'pointer' : 'not-allowed',
+                        cursor: canProceed ? 'pointer' : 'not-allowed',
                         transition: 'all 0.2s',
-                        boxShadow: hasAnsweredCurrent ? '0 4px 12px rgba(225, 29, 72, 0.25)' : 'none'
+                        boxShadow: canProceed ? '0 4px 12px rgba(225, 29, 72, 0.25)' : 'none'
                     }}
                 >
-                    {currentQuestionIndex === quizData.length - 1 ? 'Finish Quiz' : 'Next'} <ChevronRight size={20} />
+                    {currentQuestionIndex === quizData.length - 1 ? 'Finish Quiz' : isAdmin && !hasAnsweredCurrent ? 'Skip' : 'Next'} <ChevronRight size={20} />
                 </button>
             </div>
 
-            {!hasAnsweredCurrent && (
+            {!hasAnsweredCurrent && !isAdmin && (
                 <p style={{ textAlign: 'right', color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '0.5rem' }}>
                     Please select an answer to continue.
                 </p>
