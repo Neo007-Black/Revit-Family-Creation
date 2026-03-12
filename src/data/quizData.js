@@ -158,41 +158,51 @@ export const quizData = [
     },
     {
         id: 17,
-        questionEn: "Where should MEP connectors ideally be placed?",
+        questionEn: "Which naming convention is most helpful when organizing many Revit families in a library?",
         optionsEn: [
-            "Floating in the void to avoid intersections",
-            "Directly on faces or work planes of the geometry where connections occur",
-            "Only on the origin axes",
-            "Outside the bounding box"
+            "Using random numbers so names are short",
+            "Using clear, consistent names that start with category and purpose (e.g. MECH_Pump_DoubleSuction)",
+            "Naming every family 'Generic Model 1'",
+            "Using only manufacturer catalog numbers with no description"
         ],
         correctAnswerIndex: 1,
-        explanation: "Connectors should be hosted directly on the physical faces of the 3D geometry where the real-world connection (flange, fitting) occurs."
+        explanation: "A structured naming convention that starts with discipline/category and describes the function makes it much easier to search, filter, and maintain a large family library."
     },
     {
         id: 18,
-        questionEn: "Which parameter dictates what kind of system a Duct Connector can join?",
-        optionsEn: ["Flow Configuration", "System Classification", "Connector Profile", "Loss Method"],
+        questionEn: "Why is it recommended to keep 3D geometry in Revit families as simple as possible?",
+        optionsEn: [
+            "To make the family look less realistic on purpose",
+            "To reduce file size and improve model performance when many instances are placed",
+            "Because Revit cannot handle curved shapes",
+            "So the family cannot be scheduled"
+        ],
         correctAnswerIndex: 1,
-        explanation: "The 'System Classification' dictates whether it is Supply Air, Return Air, Exhaust Air, etc., preventing incorrect duct types from connecting."
+        explanation: "Overly detailed geometry increases file size and graphics load. Clean, simple geometry keeps projects lighter and faster, especially when hundreds of instances are used."
     },
     {
         id: 19,
-        questionEn: "If a water pump needs IN and OUT connections, how many pipe connectors do you need?",
-        optionsEn: ["1", "2", "3", "0"],
+        questionEn: "What is one main advantage of creating multiple Types within a single family instead of separate family files?",
+        optionsEn: [
+            "Types cannot be scheduled, but families can",
+            "It allows many sizes or options to be managed in one file and swapped easily in the project",
+            "It prevents parameters from being edited",
+            "It forces every instance to be identical"
+        ],
         correctAnswerIndex: 1,
-        explanation: "You need one connector for the INLET (Hydronic Return/Supply) and one for the OUTLET. Connectors are directional and singular."
+        explanation: "Using Types keeps related sizes or variants in one family, simplifies library management, and lets users quickly switch between sizes without loading new families."
     },
     {
         id: 20,
-        questionEn: "A Pipe Connector's 'Flow Configuration' is set to 'Calculated'. What does this mean?",
+        questionEn: "What typically happens to a wall-hosted family instance if the host wall is deleted in the project?",
         optionsEn: [
-            "The flow value is locked and cannot interact",
-            "The flow value is calculated by Revit based on downstream/upstream connected elements",
-            "The user must guess the flow",
-            "It turns off the flow completely"
+            "The family instance is automatically converted to a free-standing element",
+            "The family instance is deleted or becomes orphaned and must be reassigned",
+            "Nothing happens; the family ignores its host",
+            "The family switches category to Generic Models"
         ],
         correctAnswerIndex: 1,
-        explanation: "Calculated flow means the connector does not output a fixed number; instead it sums up the flow of all sub-elements attached downstream in the network."
+        explanation: "Host-based families depend on their hosts. If the host is removed, the element is usually deleted or reported as orphaned, reinforcing the importance of choosing the correct hosting behavior."
     },
     {
         id: 21,
@@ -263,10 +273,15 @@ export const quizData = [
     },
     {
         id: 27,
-        questionEn: "True or False: A Formula parameter can be used to automatically calculate an Air Terminal's size based on Airflow.",
-        optionsEn: ["True", "False", "-", "-"],
-        correctAnswerIndex: 0,
-        explanation: "Formulas in Revit parameters let you use math functions (like 'Flow / Velocity') to automatically adjust dimensional geometry."
+        questionEn: "What is a 'Reporting Parameter' used for in a family?",
+        optionsEn: [
+            "To report file size to the BIM manager",
+            "To read a driven value from a dimension or host and use it in formulas",
+            "To export schedules directly to Excel",
+            "To report who last edited the family"
+        ],
+        correctAnswerIndex: 1,
+        explanation: "Reporting parameters read values controlled by dimensions or hosts (such as host thickness) and feed them into formulas, allowing geometry to react intelligently without being freely editable by the user."
     },
     {
         id: 28,
@@ -363,67 +378,87 @@ export const quizData = [
     },
     {
         id: 37,
-        questionEn: "Can a Reference Plane be named?",
-        optionsEn: ["Yes", "No", "-", "-"],
-        correctAnswerIndex: 0,
-        explanation: "Yes, you can click on any Reference Plane and give it a Name under the Properties panel."
+        questionEn: "What is a key characteristic of a Line-Based family in Revit?",
+        optionsEn: [
+            "It can only be placed at the project origin",
+            "It is placed by picking two points, creating geometry that stretches along a line",
+            "It can only be used for annotation",
+            "It cannot contain parameters"
+        ],
+        correctAnswerIndex: 1,
+        explanation: "Line-Based families are hosted on a line defined by two points, making them ideal for elements like cable trays, ducts, trims, or linear accessories that need a controllable length."
     },
     {
         id: 38,
-        questionEn: "Why is naming a Reference Plane important?",
+        questionEn: "What is the primary purpose of an Annotation family?",
         optionsEn: [
-            "Because Revit prohibits unnamed planes",
-            "It turns it into an active Work Plane that you can select and draw on",
-            "It changes its color",
-            "It allows rendering to see it"
+            "To create 3D physical equipment",
+            "To represent 2D symbols, tags, and notes that display relative to view scale",
+            "To control project levels",
+            "To store only materials"
         ],
         correctAnswerIndex: 1,
-        explanation: "When you name a Reference Plane, it is added to the drop-down list of available Work Planes, allowing you to easily host geometry directly to it."
+        explanation: "Annotation families are 2D elements such as tags, symbols, and notes that scale with the view and do not represent actual 3D geometry in the model."
     },
     {
         id: 39,
-        questionEn: "What feature in the family editor checks how the geometry responds to parameter changes before loading into a project?",
-        optionsEn: ["Flexing", "Testing", "Breaking", "Bending"],
-        correctAnswerIndex: 0,
-        explanation: "'Flexing' refers to aggressively changing dimensions and parameter values in the Family Types window to ensure the 3D geometry scales without breaking."
+        questionEn: "In the Family Editor, which view is most commonly used as the primary workspace for building 3D geometry?",
+        optionsEn: [
+            "Perspective 3D view",
+            "Any Legend view",
+            "Ref. Level (plan) or other orthographic views aligned to reference planes",
+            "Project browser view"
+        ],
+        correctAnswerIndex: 2,
+        explanation: "Most geometry is created in Ref. Level or similar orthographic views aligned with reference planes, ensuring accurate constraints and predictable behavior in the project."
     },
     {
         id: 40,
-        questionEn: "Regarding MEP constraints, constraints should primarily be made to what?",
+        questionEn: "Why might you assign different Subcategories to parts of a family's geometry?",
         optionsEn: [
-            "Face of solids",
-            "Other dimensions",
-            "Reference Planes",
-            "MEP Connectors"
+            "To allow more granular control of visibility and lineweight through View Templates and Object Styles",
+            "To change the family’s Category automatically",
+            "To reduce the number of parameters",
+            "To prevent the family from being scheduled"
         ],
-        correctAnswerIndex: 2,
-        explanation: "Golden rule: Always constrain and lock to Reference Planes. Geometry follows the planes. Never constrain geometry to other pieces of geometry."
+        correctAnswerIndex: 0,
+        explanation: "Subcategories let you independently control how different parts of a family appear in views (lineweight, color, patterns, visibility) without needing separate families."
     },
     {
         id: 41,
-        questionEn: "Where do you define the OmniClass Number for an element?",
-        optionsEn: ["Family Types Dialog", "Family Category and Parameters", "Project Settings", "Materials Manager"],
+        questionEn: "What is one benefit of marking a nested family as 'Shared'?",
+        optionsEn: [
+            "It hides the nested family from schedules",
+            "It allows the nested component to appear individually in schedules and tags in the project",
+            "It locks the nested family so it cannot be edited",
+            "It automatically reduces file size"
+        ],
         correctAnswerIndex: 1,
-        explanation: "The OmniClass numbering (standardized building categorization) is assigned in the Family Category and Parameters dialog box."
+        explanation: "Shared nested families can be tagged and scheduled as separate elements in the project, which is useful for representing assemblies made of multiple measurable components."
     },
     {
         id: 42,
-        questionEn: "What does 'Linking Parameters' mean for MEP Connectors?",
+        questionEn: "When publishing a family to a shared library, which of the following is a good practice?",
         optionsEn: [
-            "Joining two projects together",
-            "Assigning a connector's inherent parameters (like Flow or Diameter) to a global Family Parameter",
-            "Connecting pipes visually",
-            "Creating shared coordinates"
+            "Leaving all parameters uncategorized and unnamed",
+            "Cleaning unused parameters and types so only production-ready options remain",
+            "Including every test type used during development",
+            "Saving multiple experimental versions of the family in the same file"
         ],
         correctAnswerIndex: 1,
-        explanation: "An MEP connector's flow or radius cannot be directly modified by the user unless it is mapped ('linked') to a labeled parameter within the host family."
+        explanation: "Before publishing, you should remove test types and unused parameters so the library contains only clean, production-ready content that is easy for others to use."
     },
     {
         id: 43,
-        questionEn: "If a Duct Connector uses 'Preset' Flow Configuration, the flow value must be entered by whom/what?",
-        optionsEn: ["Revit automatically calculates it", "The User via parameters", "The Manufacturer", "The Architect"],
+        questionEn: "What is a good reason to include a 'Type Mark' or similar identification parameter in a family?",
+        optionsEn: [
+            "To prevent the family from being tagged",
+            "To provide a stable code that can be used in schedules, tags, and documentation",
+            "To control view scale",
+            "To disable instance parameters"
+        ],
         correctAnswerIndex: 1,
-        explanation: "Unlike 'Calculated', a 'Preset' flow indicates the equipment (like a Fan) defines the actual amount of air, requiring the user to specify CFMs manually."
+        explanation: "Consistent identification parameters like Type Mark help connect the model to specifications, schedules, and tags by giving each type a stable, referenceable code."
     },
     {
         id: 44,
