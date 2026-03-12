@@ -245,6 +245,7 @@ You can use mathematical formulas to calculate parameter values dynamically.
 *   *Note on >= and <=*: These are not currently available directly in Revit conditional syntax. You must express them using NOT.
     *   Example: \`x <= y\` must be written as \`NOT(x > y)\`
 
+<FormulaSimulator />
 ### About Lookup Tables
 Lookup tables are heavily used for **pipe and conduit families** to define parameter values via an external comma-separated values (CSV) file.
 

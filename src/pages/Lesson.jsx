@@ -7,6 +7,7 @@ import { CategoryTree } from '../components/CategoryTree';
 import { ParameterExplorer } from '../components/ParameterExplorer';
 import { ConstraintSimulator } from '../components/ConstraintSimulator';
 import { LookupSimulator } from '../components/LookupSimulator';
+import { FormulaSimulator } from '../components/FormulaSimulator';
 import { FamilyConceptSimulator } from '../components/FamilyConceptSimulator';
 import { TemplateSelector } from '../components/TemplateSelector';
 import { ReferenceSimulator } from '../components/ReferenceSimulator';
@@ -38,6 +39,7 @@ export function Lesson() {
         html = html.replace('<ParameterExplorer />', '');
         html = html.replace('<ConstraintSimulator />', '');
         html = html.replace('<LookupSimulator />', '');
+        html = html.replace('<FormulaSimulator />', '');
         html = html.replace('<FamilyConceptSimulator />', '');
         html = html.replace('<TemplateSelector />', '');
         html = html.replace('<ReferenceSimulator />', '');
@@ -68,6 +70,7 @@ export function Lesson() {
                 {lesson.content.includes('<ParameterExplorer />') && <ParameterExplorer />}
                 {lesson.content.includes('<ConstraintSimulator />') && <ConstraintSimulator />}
                 {lesson.content.includes('<LookupSimulator />') && <LookupSimulator />}
+                {lesson.content.includes('<FormulaSimulator />') && <FormulaSimulator />}
                 {lesson.content.includes('<FamilyConceptSimulator />') && <FamilyConceptSimulator />}
                 {lesson.content.includes('<TemplateSelector />') && <TemplateSelector />}
                 {lesson.content.includes('<ReferenceSimulator />') && <ReferenceSimulator />}
