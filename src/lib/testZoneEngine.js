@@ -26,7 +26,9 @@ export function initTestingZone(container) {
                     <button class="view-btn active-view" id="btn-iso" onclick="setView('iso')">3D Default</button>
                     <button class="view-btn" id="btn-top" onclick="setView('top')">Top View</button>
                     <button class="view-btn" id="btn-front" onclick="setView('front')">Front Elev.</button>
+                    <button class="view-btn" id="btn-back" onclick="setView('back')">Back Elev.</button>
                     <button class="view-btn" id="btn-left" onclick="setView('left')">Left Elev.</button>
+                    <button class="view-btn" id="btn-right" onclick="setView('right')">Right Elev.</button>
                 </div>
                 <label
                     style="font-size: 0.85rem; font-weight:600; display:block; margin-top:15px; margin-bottom:5px;">Active
@@ -484,10 +486,30 @@ export function initTestingZone(container) {
         scene.add(geoSceneGroup);
         const workPlaneGroup = new THREE.Group();
         geoSceneGroup.add(workPlaneGroup);
-        const geoWorkPlane = createRevitWorkPlane(800, 0x34c759);
-        workPlaneGroup.add(geoWorkPlane);
+        const geoWorkPlaneLevel = createRevitWorkPlane(800, 0x007aff);  // Blue for Z (Level/Plan)
+        const geoWorkPlaneFront = createRevitWorkPlane(800, 0x34c759);  // Green for Y (Front/Back)
+        const geoWorkPlaneLeft  = createRevitWorkPlane(800, 0xff2d55);  // Red for X (Left/Right)
+        
+        // Statically rotate them to form a permanent 3D cross in the scene
+        geoWorkPlaneFront.rotation.set(Math.PI / 2, 0, 0);
+        geoWorkPlaneLeft.rotation.set(Math.PI / 2, Math.PI / 2, 0, 'XYZ');
+
+        geoSceneGroup.add(geoWorkPlaneLevel);
+        geoSceneGroup.add(geoWorkPlaneFront);
+        geoSceneGroup.add(geoWorkPlaneLeft);
+
         const geometryGroup = new THREE.Group();
         workPlaneGroup.add(geometryGroup);
+
+        // Helper to adjust opacity
+        function setPlaneOpacity(planeGrp, isHovered) {
+            const mesh = planeGrp.children[0];
+            const edges = planeGrp.children[1];
+            const grid = planeGrp.children[2];
+            mesh.material.opacity = isHovered ? 0.3 : 0.05;
+            edges.material.opacity = isHovered ? 1.0 : 0.2;
+            grid.material.opacity = isHovered ? 0.4 : 0.1;
+        }
 
         let isSketchMode = true;
         const formSelect = document.getElementById('form-type-select');
@@ -506,10 +528,28 @@ export function initTestingZone(container) {
 
         workplaneSelect.addEventListener('change', (e) => {
             const plane = e.target.value;
-            if (plane === 'level') workPlaneGroup.rotation.set(0, 0, 0);
-            else if (plane === 'front') workPlaneGroup.rotation.set(Math.PI / 2, 0, 0);
-            else if (plane === 'left') workPlaneGroup.rotation.set(Math.PI / 2, Math.PI / 2, 0, 'YXZ');
+            // Dim all workplanes
+            setPlaneOpacity(geoWorkPlaneLevel, false);
+            setPlaneOpacity(geoWorkPlaneFront, false);
+            setPlaneOpacity(geoWorkPlaneLeft, false);
+            
+            if (plane === 'level') {
+                workPlaneGroup.rotation.set(0, 0, 0);
+                setPlaneOpacity(geoWorkPlaneLevel, true);
+            } else if (plane === 'front') {
+                workPlaneGroup.rotation.set(Math.PI / 2, 0, 0);
+                setPlaneOpacity(geoWorkPlaneFront, true);
+            } else if (plane === 'left') {
+                workPlaneGroup.rotation.set(Math.PI / 2, Math.PI / 2, 0, 'XYZ');
+                setPlaneOpacity(geoWorkPlaneLeft, true);
+            }
         });
+
+        // Initialize default view
+        setPlaneOpacity(geoWorkPlaneLevel, false);
+        setPlaneOpacity(geoWorkPlaneFront, true);
+        setPlaneOpacity(geoWorkPlaneLeft, false);
+
 
         function updateGeoUIVisibility() {
             const form = formSelect.value;
@@ -774,7 +814,9 @@ export function initTestingZone(container) {
                 case 'iso': camera.position.set(dist, -dist, dist); break;
                 case 'top': camera.position.set(0, 0, dist); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'level'; break;
                 case 'front': camera.position.set(0, -dist, 0); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'front'; break;
+                case 'back': camera.position.set(0, dist, 0); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'front'; break;
                 case 'left': camera.position.set(-dist, 0, 0); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'left'; break;
+                case 'right': camera.position.set(dist, 0, 0); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'left'; break;
             }
             if (geoSceneGroup.visible) { wpSelect.dispatchEvent(new Event('change')); }
             controls.target.set(0, 0, 0); controls.update();

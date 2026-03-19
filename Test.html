@@ -650,6 +650,154 @@
             border: 2px solid var(--apple-green);
             box-shadow: 0 0 15px rgba(52, 199, 89, 0.5);
         }
+
+        /* Lookup Popup Modal */
+        .lookup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lookup-overlay.active {
+            display: flex;
+        }
+
+        .lookup-popup {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px 32px;
+            width: 420px;
+            max-width: 90vw;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .lookup-popup h3 {
+            margin: 0 0 6px;
+            font-size: 1.15rem;
+            color: var(--text-main);
+        }
+
+        .lookup-popup p {
+            margin: 0 0 18px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .lookup-popup label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .lookup-popup select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            background: #fff;
+            font-family: inherit;
+            color: var(--text-main);
+        }
+
+        .lookup-popup .popup-btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .lookup-popup .popup-btn {
+            flex: 1;
+            padding: 11px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .lookup-popup .popup-btn.cancel {
+            background: #f0f0f0;
+            color: var(--text-main);
+        }
+
+        .lookup-popup .popup-btn.cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .lookup-popup .popup-btn.run {
+            background: var(--apple-purple);
+            color: #fff;
+        }
+
+        .lookup-popup .popup-btn.run:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .lookup-result-box {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(88, 86, 214, 0.08), rgba(0, 122, 255, 0.08));
+            border: 1px solid rgba(88, 86, 214, 0.2);
+            display: none;
+            animation: popIn 0.3s ease;
+        }
+
+        .lookup-result-box.active {
+            display: block;
+        }
+
+        .lookup-result-box .result-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .lookup-result-box .result-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--apple-purple);
+            margin: 4px 0;
+        }
+
+        .lookup-result-box .result-detail {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -658,15 +806,20 @@
 <body>
 
     <div id="properties-palette">
-        <div class="tab-header">
+        <div class="tab-header" id="tab-header-bar">
             <button class="tab-btn active" onclick="switchTab('geometry')">1. Geo</button>
             <button class="tab-btn" onclick="switchTab('parameters')">2. Params</button>
             <button class="tab-btn" onclick="switchTab('reference')">3. Ref Line</button>
             <button class="tab-btn" onclick="switchTab('lookup')">4. Lookup</button>
             <button class="tab-btn" onclick="switchTab('paramtypes')">5. Types</button>
             <button class="tab-btn" onclick="switchTab('famprops')">6. Props</button>
-            <button class="tab-btn" onclick="switchTab('modify')" style="color: var(--apple-teal);">7. Modify</button>
         </div>
+        <script>
+            // Hide internal tabs when loaded in an iframe (controlled by parent dropdown)
+            if (window.self !== window.top) {
+                document.getElementById('tab-header-bar').style.display = 'none';
+            }
+        </script>
 
         <div id="tab-geometry" class="tab-content active">
             <h2>Form Editor</h2>
@@ -676,7 +829,9 @@
                     <button class="view-btn active-view" id="btn-iso" onclick="setView('iso')">3D Default</button>
                     <button class="view-btn" id="btn-top" onclick="setView('top')">Top View</button>
                     <button class="view-btn" id="btn-front" onclick="setView('front')">Front Elev.</button>
+                    <button class="view-btn" id="btn-back" onclick="setView('back')">Back Elev.</button>
                     <button class="view-btn" id="btn-left" onclick="setView('left')">Left Elev.</button>
+                    <button class="view-btn" id="btn-right" onclick="setView('right')">Right Elev.</button>
                 </div>
                 <label
                     style="font-size: 0.85rem; font-weight:600; display:block; margin-top:15px; margin-bottom:5px;">Active
@@ -879,6 +1034,52 @@
                     </tbody>
                 </table>
             </div>
+            <div style="text-align:center; margin-top:16px;">
+                <button onclick="openLookupPopup()" style="
+                    background: var(--apple-purple); color: #fff; border: none;
+                    padding: 12px 28px; border-radius: 14px; font-weight: 700;
+                    font-size: 0.95rem; cursor: pointer; transition: all 0.2s;
+                    font-family: inherit; letter-spacing: 0.02em;
+                    box-shadow: 0 4px 15px rgba(88,86,214,0.3);
+                " onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(88,86,214,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(88,86,214,0.3)'">
+                    ▶ Simulate Lookup Logic
+                </button>
+            </div>
+        </div>
+
+        <!-- Lookup Popup Overlay -->
+        <div class="lookup-overlay" id="lookup-overlay">
+            <div class="lookup-popup">
+                <h3>⚡ Simulate Lookup Logic</h3>
+                <p>Select your input parameters to query the external CSV data table.</p>
+
+                <label>Nominal Diameter (ND)</label>
+                <select id="popup-nd">
+                    <option value="50">DN 50 (2 inch)</option>
+                    <option value="100" selected>DN 100 (4 inch)</option>
+                    <option value="150">DN 150 (6 inch)</option>
+                    <option value="200">DN 200 (8 inch)</option>
+                </select>
+
+                <label>Lookup Column</label>
+                <select id="popup-col">
+                    <option value="Flg_Dia">Flg_Dia (Flange Diameter)</option>
+                    <option value="Pipe_OD">Pipe_OD (Pipe Outer Diameter)</option>
+                    <option value="Neck_Len">Neck_Len (Neck Length)</option>
+                </select>
+
+                <div class="popup-btn-row">
+                    <button class="popup-btn cancel" onclick="closeLookupPopup()">Cancel</button>
+                    <button class="popup-btn run" onclick="runLookupFromPopup()">Run Simulation</button>
+                </div>
+
+                <div class="lookup-result-box" id="popup-result-box">
+                    <div class="result-label">Lookup Result</div>
+                    <div class="result-value" id="popup-result-value">—</div>
+                    <div class="result-detail" id="popup-result-detail"></div>
+                </div>
+            </div>
         </div>
 
         <div id="tab-paramtypes" class="tab-content">
@@ -952,35 +1153,6 @@
                 style="border-color: var(--apple-cyan); color: #0077a3; background: rgba(50, 173, 230, 0.1);"></div>
         </div>
 
-        <div id="tab-modify" class="tab-content">
-            <h2>Modify Tools</h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top:-15px; margin-bottom: 20px;">Simulate
-                core spatial modification commands.</p>
-
-            <div class="control-group" style="border-left: 4px solid var(--apple-teal);">
-                <h3>Select Tool</h3>
-                <select id="mod-tool-select" onchange="updateModifyUI()">
-                    <option value="align">Align</option>
-                    <option value="offset">Offset</option>
-                    <option value="mirror">Mirror</option>
-                    <option value="array">Linear Array</option>
-                </select>
-            </div>
-
-            <div id="mod-options" class="control-group">
-            </div>
-
-            <button id="mod-execute-btn" class="toggle-btn active" onclick="executeModifyTool()"
-                style="background: var(--apple-teal); border-color: var(--apple-teal); box-shadow: 0 4px 15px rgba(90, 200, 250, 0.4);">Execute
-                Modify Tool</button>
-            <button class="toggle-btn" onclick="resetModifyScene()">Reset Scenario</button>
-
-            <div class="educational-note"
-                style="border-color: var(--apple-teal); color: #006b8f; background: rgba(90, 200, 250, 0.1);">
-                <strong>Interactive:</strong> Click 'Execute' to see how Revit calculates the spatial transformation.
-            </div>
-        </div>
-
     </div>
 
     <div id="viewport">
@@ -1047,6 +1219,16 @@
             return group;
         }
 
+        // Helper to adjust opacity
+        function setPlaneOpacity(planeGrp, isHovered) {
+            const mesh = planeGrp.children[0];
+            const edges = planeGrp.children[1];
+            const grid = planeGrp.children[2];
+            mesh.material.opacity = isHovered ? 0.3 : 0.05;
+            edges.material.opacity = isHovered ? 1.0 : 0.2;
+            grid.material.opacity = isHovered ? 0.4 : 0.1;
+        }
+
         // General Global Grid (Used for Tabs 2, 4, 5, 7)
         const globalGrid = createRevitWorkPlane(800, 0x888888);
         globalGrid.visible = false;
@@ -1065,8 +1247,18 @@
         scene.add(geoSceneGroup);
         const workPlaneGroup = new THREE.Group();
         geoSceneGroup.add(workPlaneGroup);
-        const geoWorkPlane = createRevitWorkPlane(800, 0x34c759);
-        workPlaneGroup.add(geoWorkPlane);
+        const geoWorkPlaneLevel = createRevitWorkPlane(800, 0x007aff);  // Blue for Z (Level/Plan)
+        const geoWorkPlaneFront = createRevitWorkPlane(800, 0x34c759);  // Green for Y (Front/Back)
+        const geoWorkPlaneLeft  = createRevitWorkPlane(800, 0xff2d55);  // Red for X (Left/Right)
+        
+        // Statically rotate them to form a permanent 3D cross in the scene
+        geoWorkPlaneFront.rotation.set(Math.PI / 2, 0, 0);
+        geoWorkPlaneLeft.rotation.set(Math.PI / 2, Math.PI / 2, 0, 'XYZ');
+
+        geoSceneGroup.add(geoWorkPlaneLevel);
+        geoSceneGroup.add(geoWorkPlaneFront);
+        geoSceneGroup.add(geoWorkPlaneLeft);
+
         const geometryGroup = new THREE.Group();
         workPlaneGroup.add(geometryGroup);
 
@@ -1087,10 +1279,27 @@
 
         workplaneSelect.addEventListener('change', (e) => {
             const plane = e.target.value;
-            if (plane === 'level') workPlaneGroup.rotation.set(0, 0, 0);
-            else if (plane === 'front') workPlaneGroup.rotation.set(Math.PI / 2, 0, 0);
-            else if (plane === 'left') workPlaneGroup.rotation.set(Math.PI / 2, Math.PI / 2, 0, 'YXZ');
+            // Dim all workplanes
+            setPlaneOpacity(geoWorkPlaneLevel, false);
+            setPlaneOpacity(geoWorkPlaneFront, false);
+            setPlaneOpacity(geoWorkPlaneLeft, false);
+            
+            if (plane === 'level') {
+                workPlaneGroup.rotation.set(0, 0, 0);
+                setPlaneOpacity(geoWorkPlaneLevel, true);
+            } else if (plane === 'front') {
+                workPlaneGroup.rotation.set(Math.PI / 2, 0, 0);
+                setPlaneOpacity(geoWorkPlaneFront, true);
+            } else if (plane === 'left') {
+                workPlaneGroup.rotation.set(Math.PI / 2, Math.PI / 2, 0, 'XYZ');
+                setPlaneOpacity(geoWorkPlaneLeft, true);
+            }
         });
+
+        // Initialize default view
+        setPlaneOpacity(geoWorkPlaneLevel, false);
+        setPlaneOpacity(geoWorkPlaneFront, true);
+        setPlaneOpacity(geoWorkPlaneLeft, false);
 
         function updateGeoUIVisibility() {
             const form = formSelect.value;
@@ -1349,13 +1558,18 @@
         // --- TAB SWITCHING LOGIC ---
         window.setView = function (view) {
             document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active-view'));
-            document.getElementById(`btn-${view}`).classList.add('active-view');
+            // Safely add class if button exists in HTML
+            const btn = document.getElementById(`btn-${view}`);
+            if (btn) btn.classList.add('active-view');
+            
             const dist = 700; const wpSelect = document.getElementById('workplane-select');
             switch (view) {
                 case 'iso': camera.position.set(dist, -dist, dist); break;
                 case 'top': camera.position.set(0, 0, dist); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'level'; break;
                 case 'front': camera.position.set(0, -dist, 0); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'front'; break;
+                case 'back': camera.position.set(0, dist, 0); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'front'; break;
                 case 'left': camera.position.set(-dist, 0, 0); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'left'; break;
+                case 'right': camera.position.set(dist, 0, 0); if (!wpSelect.disabled && geoSceneGroup.visible) wpSelect.value = 'left'; break;
             }
             if (geoSceneGroup.visible) { wpSelect.dispatchEvent(new Event('change')); }
             controls.target.set(0, 0, 0); controls.update();
@@ -1369,7 +1583,6 @@
 
             geoSceneGroup.visible = false; paramSceneGroup.visible = false; refSceneGroup.visible = false;
             lookupSceneGroup.visible = false; ptypeSceneGroup.visible = false; famPropSceneGroup.visible = false;
-            modifySceneGroup.visible = false;
 
             document.getElementById('ptypes-overlay').classList.remove('active');
             document.getElementById('fp-rcp-tag').classList.remove('active');
@@ -1389,10 +1602,15 @@
                 ptypeSceneGroup.visible = true; globalGrid.visible = true; document.getElementById('ptypes-overlay').classList.add('active'); camera.position.set(0, -400, 300); controls.target.set(0, 0, 80); updateParamTypeScene();
             } else if (tabName === 'famprops') {
                 famPropSceneGroup.visible = true; camera.position.set(0, -400, 200); controls.target.set(0, 0, 50); updateFamPropsScene();
-            } else if (tabName === 'modify') {
-                modifySceneGroup.visible = true; globalGrid.visible = true; camera.position.set(0, -400, 300); controls.target.set(0, 0, 50); updateModifyUI();
             }
         }
+
+        // Listen for postMessage from parent to switch tabs
+        window.addEventListener('message', function (event) {
+            if (event.data && event.data.type === 'switchTab' && event.data.tab) {
+                switchTab(event.data.tab);
+            }
+        });
 
         // ==========================================
         // SCENE 2: PARAMS (TAB 2)
@@ -1586,6 +1804,48 @@
             if (animate) runLookupAnimation();
         }
 
+        // ---- Lookup Popup Functions ----
+        window.openLookupPopup = function () {
+            document.getElementById('popup-result-box').classList.remove('active');
+            document.getElementById('popup-result-value').innerText = '—';
+            document.getElementById('popup-result-detail').innerText = '';
+            document.getElementById('lookup-overlay').classList.add('active');
+        }
+
+        window.closeLookupPopup = function () {
+            document.getElementById('lookup-overlay').classList.remove('active');
+        }
+
+        window.runLookupFromPopup = async function () {
+            const nd = document.getElementById('popup-nd').value;
+            const col = document.getElementById('popup-col').value;
+
+            // Sync to the existing controls so the main animation works
+            document.getElementById('lookup-nd-select').value = nd;
+            document.getElementById('lookup-nd-input').value = nd;
+            document.getElementById('lookup-col-input').value = col;
+
+            // Run the main animation (in the background panel)
+            runLookupAnimation();
+
+            // Wait for animation to complete then show result in popup
+            const targetND = parseInt(nd);
+            const colNames = { 'Flg_Dia': 'Flange Diameter', 'Pipe_OD': 'Pipe Outer Diameter', 'Neck_Len': 'Neck Length' };
+            const row = csvData.find(d => d.ND === targetND);
+
+            if (row) {
+                const value = row[col];
+                // Show result after a delay matching the animation
+                await sleep(3500);
+                document.getElementById('popup-result-value').innerText = value + ' mm';
+                document.getElementById('popup-result-detail').innerHTML =
+                    '<strong>Query:</strong> size_lookup("Flange_Data.csv", "' + col + '", 0, ND_' + nd + ')<br>' +
+                    '<strong>Column:</strong> ' + colNames[col] + '<br>' +
+                    '<strong>ND:</strong> DN ' + nd;
+                document.getElementById('popup-result-box').classList.add('active');
+            }
+        }
+
         // ==========================================
         // SCENE 5: PARAMETER TYPES (TAB 5)
         // ==========================================
@@ -1716,167 +1976,12 @@
             } else { rcpControls.style.display = 'none'; rcpGroup.visible = false; rcpTag.classList.remove('active'); }
         };
 
-        // ==========================================
-        // SCENE 7: MODIFY TOOLS (TAB 7)
-        // ==========================================
-        const modifySceneGroup = new THREE.Group(); scene.add(modifySceneGroup);
-        const modObjects = new THREE.Group(); modifySceneGroup.add(modObjects);
-        const modHelpers = new THREE.Group(); modifySceneGroup.add(modHelpers);
-
-        let modBaseMesh = null;
-        const modMat = new THREE.MeshPhysicalMaterial({ color: 0x0ea5e9, transparent: true, opacity: 0.85, roughness: 0.2, metalness: 0.2 });
-        const modGhostMat = new THREE.MeshPhysicalMaterial({ color: 0x86868b, transparent: true, opacity: 0.3 });
-
-        window.updateModifyUI = function () {
-            const tool = document.getElementById('mod-tool-select').value;
-            const opts = document.getElementById('mod-options');
-            opts.innerHTML = '';
-
-            if (tool === 'align') {
-                opts.innerHTML = `<p class="param-desc">Aligns one or more elements with a selected element or reference.</p>`;
-            } else if (tool === 'offset') {
-                opts.innerHTML = `
-                    <p class="param-desc">Moves or copies an element a specified distance.</p>
-                    <div class="slider-container"><label><span>Offset Distance</span> <span id="mod-off-val">50</span></label><input type="range" id="mod-off-slider" min="20" max="150" value="50" oninput="document.getElementById('mod-off-val').innerText=this.value"></div>
-                `;
-            } else if (tool === 'mirror') {
-                opts.innerHTML = `
-                    <p class="param-desc">Reverses the position of a selected element across an axis.</p>
-                    <label class="checkbox-label"><input type="checkbox" id="mod-mir-copy" checked> Copy Object</label>
-                `;
-            } else if (tool === 'array') {
-                opts.innerHTML = `
-                    <p class="param-desc">Creates a linear array of elements.</p>
-                    <div class="slider-container"><label><span>Number of Items</span> <span id="mod-arr-val">4</span></label><input type="range" id="mod-arr-slider" min="2" max="8" value="4" oninput="document.getElementById('mod-arr-val').innerText=this.value"></div>
-                    <div class="slider-container"><label><span>Spacing Distance</span> <span id="mod-arr-dist-val">40</span></label><input type="range" id="mod-arr-dist-slider" min="20" max="80" value="40" oninput="document.getElementById('mod-arr-dist-val').innerText=this.value"></div>
-                `;
-            }
-            resetModifyScene();
-        };
-
-        window.resetModifyScene = function () {
-            while (modObjects.children.length > 0) modObjects.remove(modObjects.children[0]);
-            while (modHelpers.children.length > 0) modHelpers.remove(modHelpers.children[0]);
-
-            const tool = document.getElementById('mod-tool-select').value;
-
-            if (tool === 'align') {
-                // Target Plane
-                const plane = new THREE.Mesh(new THREE.PlaneGeometry(150, 150), new THREE.MeshBasicMaterial({ color: 0x34c759, transparent: true, opacity: 0.3, side: THREE.DoubleSide }));
-                plane.rotation.y = Math.PI / 2;
-                plane.position.set(-80, 0, 50);
-                modHelpers.add(plane);
-                // Object to align
-                modBaseMesh = new THREE.Mesh(new THREE.BoxGeometry(20, 60, 40), modMat);
-                modBaseMesh.position.set(80, 0, 50);
-                modObjects.add(modBaseMesh);
-            }
-            else if (tool === 'offset') {
-                modBaseMesh = new THREE.Mesh(new THREE.BoxGeometry(150, 4, 20), modMat);
-                modBaseMesh.position.set(0, -50, 10);
-                modObjects.add(modBaseMesh);
-            }
-            else if (tool === 'mirror') {
-                // Axis Line
-                const axis = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -150, 0), new THREE.Vector3(0, 150, 0)]), new THREE.LineDashedMaterial({ color: 0xff2d55, dashSize: 10, gapSize: 10, linewidth: 2 }));
-                axis.computeLineDistances();
-                modHelpers.add(axis);
-                // L-Shaped Object to show flipping clearly
-                const shape = new THREE.Shape(); shape.moveTo(0, 0); shape.lineTo(40, 0); shape.lineTo(40, 10); shape.lineTo(10, 10); shape.lineTo(10, 50); shape.lineTo(0, 50); shape.lineTo(0, 0);
-                modBaseMesh = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, { depth: 20, bevelEnabled: false }), modMat);
-                modBaseMesh.position.set(20, -25, 0);
-                modObjects.add(modBaseMesh);
-            }
-            else if (tool === 'array') {
-                modBaseMesh = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 30), modMat);
-                modBaseMesh.rotation.x = Math.PI / 2;
-                modBaseMesh.position.set(-100, 0, 15);
-                modObjects.add(modBaseMesh);
-            }
-
-            // Re-enable execute button
-            document.getElementById('mod-execute-btn').style.opacity = '1';
-            document.getElementById('mod-execute-btn').style.pointerEvents = 'auto';
-        };
-
-        window.executeModifyTool = function () {
-            // Disable button during execution
-            document.getElementById('mod-execute-btn').style.opacity = '0.5';
-            document.getElementById('mod-execute-btn').style.pointerEvents = 'none';
-
-            const tool = document.getElementById('mod-tool-select').value;
-
-            if (tool === 'align') {
-                const startX = modBaseMesh.position.x;
-                const targetX = -70; // Front face touches plane at -80
-                let p = 0;
-                function anim() {
-                    p += 0.05;
-                    if (p <= 1) {
-                        modBaseMesh.position.x = startX + (targetX - startX) * p;
-                        requestAnimationFrame(anim);
-                    } else {
-                        modBaseMesh.material = new THREE.MeshPhysicalMaterial({ color: 0x34c759, transparent: true, opacity: 0.8 });
-                        setTimeout(() => { modBaseMesh.material = modMat; }, 500);
-                    }
-                }
-                anim();
-            }
-            else if (tool === 'offset') {
-                const dist = parseInt(document.getElementById('mod-off-slider').value);
-                const clone = modBaseMesh.clone();
-                clone.material = modGhostMat.clone();
-                clone.position.y += dist;
-                modObjects.add(clone);
-                let p = 0;
-                function anim() {
-                    p += 0.08;
-                    if (p <= 1) { clone.scale.set(1, p, 1); requestAnimationFrame(anim); }
-                    else { clone.scale.set(1, 1, 1); clone.material = modMat; }
-                }
-                anim();
-            }
-            else if (tool === 'mirror') {
-                const isCopy = document.getElementById('mod-mir-copy').checked;
-                const clone = modBaseMesh.clone();
-                clone.material = modGhostMat.clone();
-                clone.scale.x = -1; // Flip X
-                clone.position.x = -modBaseMesh.position.x; // Move across axis
-
-                if (!isCopy) modBaseMesh.visible = false;
-                modObjects.add(clone);
-
-                let p = 0;
-                function anim() {
-                    p += 0.08;
-                    if (p <= 1) { clone.scale.z = p; requestAnimationFrame(anim); }
-                    else { clone.scale.z = 1; clone.material = modMat; }
-                }
-                anim();
-            }
-            else if (tool === 'array') {
-                const count = parseInt(document.getElementById('mod-arr-slider').value);
-                const dist = parseInt(document.getElementById('mod-arr-dist-slider').value);
-
-                let current = 1;
-                function spawn() {
-                    if (current < count) {
-                        const clone = modBaseMesh.clone();
-                        clone.position.x = modBaseMesh.position.x + (dist * current);
-                        modObjects.add(clone);
-                        current++;
-                        setTimeout(spawn, 150);
-                    }
-                }
-                spawn();
-            }
-        };
-
         // --- GLOBAL RENDER LOOP ---
         function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); }
         window.addEventListener('resize', () => { camera.aspect = viewport.clientWidth / viewport.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(viewport.clientWidth, viewport.clientHeight); });
 
         // Initialize All Scenes safely
+        switchTab('geometry');
         setView('iso');
         updateGeoUIVisibility();
         drawGeometry();
@@ -1885,7 +1990,6 @@
         buildFlangeGeometry(100, csvData.find(d => d.ND === 100));
         updateParamTypeScene();
         updateFamPropsScene();
-        updateModifyUI(); // Init Tab 7
         animate();
     </script>
 </body>
